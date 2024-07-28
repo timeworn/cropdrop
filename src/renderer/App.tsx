@@ -1,5 +1,4 @@
 import { MemoryRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import icon from '../../assets/icon.svg';
 import './App.css';
 import NavBar from './components/navBar/NavBar';
 import Error404 from './components/404/404';
