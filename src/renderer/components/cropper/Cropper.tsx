@@ -13,11 +13,13 @@ import {
   Button,
   Cropper,
   DropArea,
+  MenuComponent,
   MultiMenuButtonComponent,
 } from './CropperComponents';
 import {
   CropImage,
   CropShapeType,
+  CropMenuOptions,
   CropStencilSize,
   CropStencilType,
 } from './Types';
@@ -223,114 +225,112 @@ export default function ImageCropper() {
   }, [image]);
 
   return (
-    <div className="relative top-24 flex flex-col items-center">
-      <div className="mb-4 flex flex-row items-center gap-3">
-        <Button disabled={!image} onClick={clearImage} color="red">
-          Clear Image
-        </Button>
-        <Button disabled={!image} onClick={saveImage} color="green">
-          Save Image
-        </Button>
+    <div>
+      <DropArea
+        onDragDrop={onDragDrop}
+        onDragOver={onDragOver}
+        image={image}
+        onUpload={onUpload}
+        onLoadImage={onLoadImage}
+        inputRef={inputRef}
+      />
 
-        <Menu as="div" className="relative inline-block text-left">
-          <MenuButton
-            disabled={!image}
-            className="disabled:brightness-50 inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset hover:bg-gray-900 hover:text-white"
-          >
-            Stencil Options
-          </MenuButton>
+      <div
+        aria-disabled={!image}
+        className="relative aria-disabled:hidden top-20 flex flex-col items-center"
+      >
+        <div className=" mb-4 flex flex-row items-center gap-3">
+          <Button onClick={clearImage} color="red">
+            Clear Image
+          </Button>
+          <Button onClick={saveImage} color="green">
+            Save Image
+          </Button>
 
-          <MenuItems
-            transition
-            className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-600 rounded-md bg-white dark:bg-slate-800 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
-          >
-            <div className="py-1">
-              <MultiMenuButtonComponent
-                disabled={false}
-                buttonText="Stencils"
-                options={stencils}
-                checkVariable={stencilType}
-                onClick={onStencilType}
-              />
+          <Menu as="div" className="relative inline-block text-left">
+            <MenuButton className="disabled:brightness-50 inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset hover:bg-gray-900 hover:text-white">
+              Stencil Options
+            </MenuButton>
 
-              <MultiMenuButtonComponent
-                disabled={!scaleOnSize}
-                buttonText="Sizes"
-                options={stencilSizes}
-                checkVariable={stencilSize}
-                onClick={onStencil}
-              />
-            </div>
+            <MenuItems
+              transition
+              className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-600 rounded-md bg-white dark:bg-slate-800 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+            >
+              <div className="py-1">
+                <MultiMenuButtonComponent
+                  disabled={false}
+                  buttonText="Stencils"
+                  options={stencils}
+                  checkVariable={stencilType}
+                  onClick={onStencilType}
+                />
 
-            <div className="py-1">
-              <Field
-                onClick={onCheckSave}
-                className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-left cursor-pointer text-gray-700 dark:text-slate-300 hover:bg-slate-500 hover:text-gray-200"
-              >
-                <Checkbox
-                  checked={checkEnabled}
-                  onChange={onCheckSave}
-                  className="group block size-4 rounded border bg-white data-[checked]:bg-blue-500"
+                <MultiMenuButtonComponent
+                  disabled={!scaleOnSize}
+                  buttonText="Sizes"
+                  options={stencilSizes}
+                  checkVariable={stencilSize}
+                  onClick={onStencil}
+                />
+              </div>
+
+              <div className="py-1">
+                <Field
+                  onClick={onCheckSave}
+                  className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-left cursor-pointer text-gray-700 dark:text-slate-300 hover:bg-slate-500 hover:text-gray-200"
                 >
-                  <svg
-                    className="stroke-white opacity-0 group-data-[checked]:opacity-100"
-                    viewBox="0 0 14 14"
-                    fill="none"
+                  <Checkbox
+                    checked={checkEnabled}
+                    onChange={onCheckSave}
+                    className="group block size-4 rounded border bg-white data-[checked]:bg-blue-500"
                   >
-                    <path
-                      d="M3 8L6 11L11 3.5"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </Checkbox>
-                <p>
-                  <span className="text-green-500">Save</span> Uses Stencil Size
-                </p>
-              </Field>
-            </div>
-          </MenuItems>
-        </Menu>
+                    <svg
+                      className="stroke-white opacity-0 group-data-[checked]:opacity-100"
+                      viewBox="0 0 14 14"
+                      fill="none"
+                    >
+                      <path
+                        d="M3 8L6 11L11 3.5"
+                        strokeWidth={2}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </Checkbox>
+                  <p>
+                    <span className="text-green-500">Save</span> Uses Stencil
+                    Size
+                  </p>
+                </Field>
+              </div>
+            </MenuItems>
+          </Menu>
 
-        <Menu as="div" className="relative inline-block text-left">
-          <MenuButton
-            disabled={!image}
-            className="disabled:brightness-50 inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset hover:bg-gray-900 hover:text-white"
-          >
-            Preview Options
-          </MenuButton>
+          <Menu as="div" className="relative inline-block text-left">
+            <MenuButton className="disabled:brightness-50 inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset hover:bg-gray-900 hover:text-white">
+              Preview Options
+            </MenuButton>
 
-          <MenuItems
-            transition
-            className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-600 rounded-md bg-white dark:bg-slate-800 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
-          >
-            <div className="py-1">
-              <MultiMenuButtonComponent
-                disabled={!image}
-                buttonText="Shape"
-                options={previewShapes}
-                checkVariable={previewShape}
-                onClick={onShape}
-              />
-            </div>
-          </MenuItems>
-        </Menu>
-      </div>
-
-      <div className="w-[80vw] h-[75vh]">
-        <DropArea
-          onDragDrop={onDragDrop}
-          onDragOver={onDragOver}
-          image={image}
-          onUpload={onUpload}
-          onLoadImage={onLoadImage}
-          inputRef={inputRef}
-        />
+            <MenuItems
+              transition
+              className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-600 rounded-md bg-white dark:bg-slate-800 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+            >
+              <div className="py-1">
+                <MultiMenuButtonComponent
+                  disabled={false}
+                  buttonText="Shape"
+                  options={previewShapes}
+                  checkVariable={previewShape}
+                  onClick={onShape}
+                />
+              </div>
+            </MenuItems>
+          </Menu>
+        </div>
 
         <div
-          className={`${image ? '' : 'hidden'} relative
-flex flex-row gap-5`}
+          className="w-[80vw] h-[75vh] relative
+flex flex-row gap-5"
         >
           <div className="w-2/3">
             <Cropper

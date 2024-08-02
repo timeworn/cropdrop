@@ -1,5 +1,5 @@
 {
-  "description": "A foundation for scalable desktop apps",
+  "description": "An image cropper",
   "keywords": [
     "electron",
     "boilerplate",
@@ -21,9 +21,9 @@
   },
   "license": "MIT",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
+    "name": "timeworn",
     "email": "electronreactboilerplate@gmail.com",
-    "url": "https://electron-react-boilerplate.js.org"
+    "url": "https://github.com/timeworn/cropdrop"
   },
   "contributors": [
     {
@@ -178,8 +178,8 @@
     "webpack-merge": "^5.9.0"
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "CropDrop",
+    "appId": "some.fake.app.id",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -238,8 +238,8 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "owner": "timeworn",
+      "repo": "cropdrop"
     }
   },
   "collective": {

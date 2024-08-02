@@ -19,6 +19,32 @@ export interface CropStencilType {
   menuDefaultValue?: any;
 }
 
+export interface CropMenuOptions {
+  name: string;
+  methodName: string;
+  method?: () => void;
+  disableVariableName?: string;
+  disableVariable?: any;
+  checkVariableName: string;
+  checkVariable?: any;
+  values: Array<CropStencilType | CropStencilSize>;
+}
+
+export type CropMenuProps = {
+  image: CropImage | null;
+  buttonText: string;
+  options: Array<CropMenuOptions>;
+  customHtml?: any;
+};
+
+export type CropMultiMenuProps = {
+  disabled: boolean;
+  buttonText: string;
+  options: Array<CropStencilType | CropStencilSize>;
+  onClick?: (option: any) => void;
+  checkVariable?: CropStencilType | CropStencilSize;
+};
+
 export interface CropShapeType {
   name: string;
   html: string;
@@ -30,18 +56,9 @@ export interface CropPreviewType {
 }
 
 export type CropButtonProps = {
-  disabled: boolean;
   onClick: () => void;
   color: 'red' | 'green';
   children: React.ReactNode;
-};
-
-export type CropMenuProps = {
-  disabled: boolean;
-  buttonText: string;
-  options: Array<CropStencilType | CropStencilSize>;
-  onClick: (option: any) => void;
-  checkVariable: CropStencilType | CropStencilSize;
 };
 
 export type CropDropAreaProps = {
@@ -54,7 +71,7 @@ export type CropDropAreaProps = {
 };
 
 export type CropUploadButtonProps = {
-  onClick: () => void;
+  onClick?: () => void;
   onLoadImage: (event: React.ChangeEvent<HTMLInputElement>) => void;
   inputRef: React.RefObject<HTMLInputElement>;
 };
